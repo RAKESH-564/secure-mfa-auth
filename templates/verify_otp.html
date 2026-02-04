@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify OTP - Secure MFA Auth</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h1>🔑 Verify OTP</h1>
+                <p>Enter the 6-digit code from your authenticator app.</p>
+            </div>
+
+            {% if error %}
+            <div class="alert alert-error">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <form method="POST">
+                <div class="form-group">
+                    <label for="otp_token">6-Digit Code</label>
+                    <input 
+                        type="number" 
+                        id="otp_token" 
+                        name="otp_token" 
+                        placeholder="000000" 
+                        required 
+                        autofocus
+                        min="0"
+                        max="999999"
+                        style="text-align: center; font-size: 24px; letter-spacing: 10px; font-weight: bold;">
+                </div>
+
+                <button type="submit">Verify & Login</button>
+            </form>
+
+            <div class="form-footer">
+                Having trouble? Contact support at support@example.com
+            </div>
+        </div>
+    </div>
+</body>
+</html>

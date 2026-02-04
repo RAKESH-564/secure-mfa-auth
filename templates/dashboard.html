@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Secure MFA Auth</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard">
+            <div class="dashboard-header">
+                <h1>📊 Dashboard</h1>
+                <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+            </div>
+
+            {% if request.args.get('success') %}
+            <div class="alert alert-success">
+                {{ request.args.get('success') }}
+            </div>
+            {% endif %}
+
+            <div class="user-info">
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Member Since:</strong> {{ user.created_at.strftime('%B %d, %Y') }}</p>
+                <p><strong>Last Login:</strong> 
+                    {% if user.last_login %}
+                        {{ user.last_login.strftime('%B %d, %Y at %I:%M %p') }}
+                    {% else %}
+                        This is your first login
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="mfa-section">
+                <h3>🔐 Multi-Factor Authentication (MFA)</h3>
+                <p>
+                    Status: 
+                    {% if user.mfa_enabled %}
+                        <span class="mfa-enabled">✓ Enabled</span>
+                    {% else %}
+                        <span class="mfa-disabled">✗ Disabled</span>
+                    {% endif %}
+                </p>
+                <p>Enhance your account security by enabling two-factor authentication with Google Authenticator.</p>
+                {% if not user.mfa_enabled %}
+                <a href="{{ url_for('setup_mfa') }}" class="setup-mfa-btn">Enable MFA</a>
+                {% else %}
+                <p style="color: #28a745; margin-top: 10px;">Your account is protected with MFA!</p>
+                {% endif %}
+            </div>
+
+            <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin-top: 20px; border-left: 4px solid #17a2b8;">
+                <h3 style="color: #333; margin-bottom: 10px;">💡 Security Tips</h3>
+                <ul style="margin-left: 20px; color: #555;">
+                    <li>Use a strong, unique password</li>
+                    <li>Enable MFA for added security</li>
+                    <li>Don't share your OTP codes with anyone</li>
+                    <li>Log out from untrusted devices</li>
+                    <li>Keep your authenticator app backed up</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
